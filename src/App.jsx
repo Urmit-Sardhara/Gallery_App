@@ -1,28 +1,21 @@
-import { useEffect, useState } from "react"
-
+import axios from "axios"
 
 function App() {
-  const [name , setname ] = useState("this is the gallary")
-
-  const change=()=>{
-   
-    setname("btn is click new photo is load ")
+  const getData= async()=>{
+  const respones = await axios.get("https://picsum.photos/v2/list?page=2&limit=100")
+  console.log(respones);
+  
     
   }
-
-  useEffect(()=>{
-    console.log("efect is the runngin ");
-    
-  },[name])
-
-
   return (
-    <div>
-      <h1>{name}</h1>
-      <button onClick={()=>{
-        change()
+    <div className="bg-black h-screen p-4 text-white">
 
-      }} className="bg-red-500 p-2 ml-4 rounded-2xl ">click</button>
+      <button
+       className=" bg-green-400 active:scale-95 mb-3 p-2 rounded"
+       onClick={getData}
+       >click me
+      </button>
+      
     </div>
   )
 }
