@@ -3,7 +3,8 @@
 function Button(props) {
   return (
     <>
-      <button
+      <button 
+      style={{opacity: props.index==1 ?0.5:1} }
          className="bg-yellow-500 font-bold text-black text-lg px-4 py-2 rounded active:scale-95 cursor-pointer"
          
          onClick={()=>{
