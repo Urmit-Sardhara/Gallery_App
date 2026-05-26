@@ -1,5 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import Card from "./components/Card"
+import Button from "./components/Button"
 
 function App() {
   const [UserData, setUserData] = useState([])
@@ -7,7 +9,7 @@ function App() {
  
   
   const getData= async()=>{
-  const respones = await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=10`)
+  const respones = await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=14`)
   // console.log(respones.data)
   let temp =respones.data
   setUserData(temp)
@@ -26,12 +28,7 @@ function App() {
       return(
       <div key={idx}>
         
-        <a href={elm.url} target="_blank">
-          <div  className="h-40 w-44 overflow-hidden rounded-2xl bg-amber-50 "> 
-        <img className="h-full w-full object-cover" src={elm.download_url} alt="" /> 
-        </div>
-        <h2 className="font-bold text-lg">{elm.author}</h2>
-        </a>
+       <Card elm={elm}/>
 
       </div>
         
@@ -43,30 +40,13 @@ function App() {
     <div className="bg-black h-screen overflow-auto p-4 text-white">
 
    
-      <div className="flex h-[87%] flex-wrap justify-evenly gap-4">
+      <div className="flex lg:h-[88%] flex-wrap justify-around gap-4 ">
         {PrintData}
       </div>
+
       <div className="flex justify-center gap-5 mt-5">
 
-        <button
-         className="bg-yellow-500 font-bold text-black text-lg px-4 py-2 rounded active:scale-95 cursor-pointer"
-         
-         onClick={()=>{
-              if(index>1){
-                setindex(index-1)
-                setUserData([])       // ye kya kam karta he 
-              }
-        }}
-        >Prev</button>
-
-        <button className="bg-yellow-500 font-bold text-black text-lg px-4 py-2 rounded active:scale-95 cursor-pointer"
-
-         onClick={()=>{
-           setindex(index+1)        
-           setUserData([])       // ye kya kam karta he 
-        }}
-
-        >Next</button>
+       <Button index={index} setindex={setindex} setUserData={setUserData} />
       </div>
     </div>
   )
