@@ -1,12 +1,13 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function App() {
   const [UserData, setUserData] = useState([])
+  const [index, setindex] = useState(2)
  
   
   const getData= async()=>{
-  const respones = await axios.get("https://picsum.photos/v2/list?page=2&limit=15")
+  const respones = await axios.get(`https://picsum.photos/v2/list?page=${index}&limit=10`)
   // console.log(respones.data)
   let temp =respones.data
   setUserData(temp)
@@ -15,15 +16,23 @@ function App() {
     // console.log(typeof UserData);
     
   }
-  let PrintData="No Data found"
+  useEffect(function(){
+    getData()
+  },[index])
+
+  let PrintData=<h3 className="text-gray-400 absolute top-1/2 left-1/2 ">Loding. . . .</h3>
   if(UserData.length>0){
     PrintData=UserData.map((elm,idx)=>{
       return(
-      <div>
-          <div key={idx} className="h-40 w-44 overflow-hidden rounded-2xl bg-amber-50 "> 
+      <div key={idx}>
+        
+        <a href={elm.url} target="_blank">
+          <div  className="h-40 w-44 overflow-hidden rounded-2xl bg-amber-50 "> 
         <img className="h-full w-full object-cover" src={elm.download_url} alt="" /> 
         </div>
-        <p>{elm.author}</p>
+        <h2 className="font-bold text-lg">{elm.author}</h2>
+        </a>
+
       </div>
         
       )
@@ -33,13 +42,31 @@ function App() {
   return (
     <div className="bg-black h-screen overflow-auto p-4 text-white">
 
-      <button
-       className=" bg-green-400 active:scale-95 mb-3 p-2 rounded"
-       onClick={getData}
-       >click me
-      </button>
-      <div className="flex flex-wrap gap-4">
+   
+      <div className="flex h-[87%] flex-wrap justify-evenly gap-4">
         {PrintData}
+      </div>
+      <div className="flex justify-center gap-5 mt-5">
+
+        <button
+         className="bg-yellow-500 font-bold text-black text-lg px-4 py-2 rounded active:scale-95 cursor-pointer"
+         
+         onClick={()=>{
+              if(index>1){
+                setindex(index-1)
+                setUserData([])       // ye kya kam karta he 
+              }
+        }}
+        >Prev</button>
+
+        <button className="bg-yellow-500 font-bold text-black text-lg px-4 py-2 rounded active:scale-95 cursor-pointer"
+
+         onClick={()=>{
+           setindex(index+1)        
+           setUserData([])       // ye kya kam karta he 
+        }}
+
+        >Next</button>
       </div>
     </div>
   )
